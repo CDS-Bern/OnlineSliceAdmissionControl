@@ -43,16 +43,7 @@ def ExpRP(NSRs, max_slots, sample_pool, total_requests, p_min, p_max):
 
     system_capacity = [S1[2], S1[3], S1[4]]  # Cloud
     aggregated_system_capacity = system_capacity[0] + system_capacity[1] + system_capacity[2]
-    # print("System Capacity: ", system_capacity, " Aggregated Capacity: ", aggregated_system_capacity)
-
-    # E1 = [nodeCPU(), nodeRAM(), nodeSto()]  # Edge 1
-    # E2 = [nodeCPU(), nodeRAM(), nodeSto()]  # Edge 2
-    # E3 = [nodeCPU(), nodeRAM(), nodeSto()]  # Edge 3
-    # E4 = [nodeCPU(), nodeRAM(), nodeSto()]  # Edge 4
-    # R1 = [nodeCPU(), nodeRAM(), nodeSto()]  # RU 1
-    # R2 = [nodeCPU(), nodeRAM(), nodeSto()]  # RU 2
-    # R3 = [nodeCPU(), nodeRAM(), nodeSto()]  # RU 3
-
+   
     #######################################################################################################
     # Alpha: Capacity variation parameter. Ratio between aggregate capacities over all dimensions and single dimension capacity.
     alpha = (float(aggregated_system_capacity) / system_capacity[0],
@@ -97,34 +88,7 @@ def ExpRP(NSRs, max_slots, sample_pool, total_requests, p_min, p_max):
 
         for request in NSRs_in_current_slot:
             request_value = request[4]
-            all_revenues += request_value
-
-            # print("Slice Request Value: ", round(request_value))
-            # print("p_min: ", p_min)
-            # print("p_max: ", p_max)
-            # print("WTPR: ", wtpr)
-            #
-            # print("")
-            # print("Scarcity: ", round(scarcity))
-            # # print("CPU utilization: ", round(node_cpu_util, 1), "/", C[0])
-            # # print("RAM utilization: ", round(node_ram_util, 1), "/", C[1])
-            # # print("Storage utilization: ", round(sto_node_util, 1), "/", C[2])
-            # print("CPU utilization: ", round(system_cpu_util, 1))
-            # print("RAM utilization: ", round(system_ram_util, 1))
-            # print("Storage utilization: ", round(system_storage_util, 1))
-            # print("")
-            # print("Normalized CPU utilization: ", round(norm_util_cpu, 3))
-            # print("Normalized RAM utilization: ", round(norm_util_ram, 3))
-            # print("Normalized Storage utilization: ", round(norm_util_sto, 3))
-            # print("")
-            # print("CPU Scarcity: ", round(f_cpu_, 3))
-            # print("RAM Scarcity", round(f_ram_, 3))
-            # print("Storage Scarcity", round(f_sto_, 3))
-            # print("")
-
-            # Admission Criteria:
-            # Slice Request is Accepted - resource requirements are less than the capacity - simple policy.
-            # Needs to be upgraded to consider FCFS and ExPRP policies
+            all_revenues += request_value            
             system_current_available_resources = list(map(lambda x, y: x - y, system_capacity, overall_system_util))
 
             # print("Current Availability before decision: ", list(np.around(np.array(system_current_available_resources), 2)))
@@ -136,25 +100,14 @@ def ExpRP(NSRs, max_slots, sample_pool, total_requests, p_min, p_max):
                 no_accepted += 1
                 accepted_requests[no_accepted] = [*request, slot]
                 accumulated_value += request_value
-                accumulated_squares += request_value**2
-                # active_slices = [s for s in accepted_requests if s not in expired_slices]
-                # print("Number of Active Slices: ", len(active_slices))
-
-                # if request[3] == 's1':
-                #     s1 += 1
-                # elif request[2] == 's2':
-                #     s2 += 1
-                # elif request[2] == 's3':
-                #     s3 += 1
-
-                # sum_sl_lifetime += request[3]
+                accumulated_squares += request_value**2                
 
             else:
                 # print("Request Rejected")
                 previous_acceptance_state = False
                 # no_rejected += 1
 
-                # active_slices = [s for s in accepted_requests if s not in expired_slices]
+                # active_slices = [s for s in accepted_requests if s not in expired_requests]
                 # print("Number of Active Slices: ", len(active_slices))
 
             # Update the system utilization for the next request
@@ -170,7 +123,8 @@ def ExpRP(NSRs, max_slots, sample_pool, total_requests, p_min, p_max):
                 overall_system_util[0] -= accepted_requests[old_request][0]
                 overall_system_util[1] -= accepted_requests[old_request][1]
                 overall_system_util[2] -= accepted_requests[old_request][2]
-                # active_slices = [s for s in accepted_requests if s not in expired_slices]
+                # active_slices = [s for s in accepted_requests if s not in expired_requests]
+                # print("Number of Active Slices: ", len(active_slices))            
 
         # Remove expired slices from the accepted requests dict
         for expired_request_idx in expired_requests:
@@ -179,112 +133,6 @@ def ExpRP(NSRs, max_slots, sample_pool, total_requests, p_min, p_max):
         slot += 1
         total_util += sum(overall_system_util)
 
-        # current_acceptance_ratio = float(no_accepted) / total_requests
-        # print("Current Acceptance Ratio: ", current_acceptance_ratio)
-        # curr_rej = round(no_rejected / total_requests, 3)
-        # curr_req = round(no_requested / total_requests, 3)
-        # curr_avail = round(sum_cpu / total_requests, 3)
-
-        # f.write(str(current_acceptance_ratio) + ',' + str(slot) + '\n')
-        # print("Current Acceptance Ratio: ", curr_acr)
-
-        # cpu_util = round((sum([nodeCPU() - node[0]]) / nodeCPU()) * 100, 3)
-        # f_cpu.write(str(round(overall_system_util[0] / system_capacity[0], 2)) + ',' + str(slot) + '\n')
-
-        # ram_util = round((sum([nodeRAM() - node[1]]) / nodeRAM()) * 100, 3)
-        # f_ram.write(str(round(overall_system_util[1] / system_capacity[1], 2)) + ',' + str(slot) + '\n')
-
-        # sto_util = round((sum([nodeSto() - node[2]]) / nodeSto()) * 100, 3)
-        # f_sto.write(str(round(overall_system_util[2] / system_capacity[2], 2)) + ',' + str(slot) + '\n')
-
-        # f_revenue_time.write(str(round(accumulated_value, 2)) + ',' + str(slot) + '\n')
-
-        # f_as.write(str(len(set(accepted).difference(expired_slices))) + ',' + str(slot) + '\n')
-        # return NSRs, max_slots
-        # print("wtpr: ", wtpr)
-
-    # f.close()
-    # f_cpu.close()
-    # f_ram.close()
-    # f_sto.close()
-    # f_as.close()
-    # f_revenue_time.close()
-    # print("###########################################################################################################")
-    # print("###########################################################################################################")
-    # print("Number of Requests: ", sum(NSRs))
-    # print("Number of Accepted Requests: ", no_accepted)
-    # print("Number of Rejected Requests: ", no_rejected)
-    # print("Final Acceptance Ratio: ", round(no_accepted / sum(NSRs), 3))
-    # print("Number of Accepted BE Slices: ", no_be)
-    # print("Number of Accepted URLLC Slices: ", no_urllc)
-    # print("Number of Accepted eMBB Slices: ", no_embb)
-    # print("Average CPU Utilization: ", round(sum_cpu / C[0], 2), "%")
-    # print("Average RAM Utilization: ", round(sum_ram / C[1], 2), "%")
-    # print("Average Storage Utilization: ", round(sum_sto / C[2], 2), "%")
-    # print("Average Slice life time: ", round(sum_sl_lifetime / no_accepted, 1))
-    # active_slices = [s for s in accepted_requests if s not in expired_slices]
-    # print("Number of Active Slices at end of Simulation: ", len(active_slices))
-    # print("Number of Expired Slices at end of Simulation: ", len(expired_slices))
-    # print("Number of Active Slices: ", len(set(accepted).difference(expired_slices)))
-    # print("Number of Expired Slices: ", len(expired_slices))
-    # print("Active Slices: ", sorted(set(accepted).difference(expired_slices)))
-    # print("Total Value of Accepted SRs: ", round(accumulated_value))
-    # print("Total Value of All SRs: ", round(all_revenues))
-    # print("Ratio - Accepted Values/Total Value: ", round(accumulated_value / all_revenues, 3))
-    # print("Average Value of Accepted Slices: ", round(acc_val / len(accepted)))
-    # print("Max Value: ", round(max(all_revenues)))
-    # print("Min Value: ", round(min(all_revenues)))
-    # print("Average CPU Requested: ", round(avg_cpu/max_slots, 1))
-    # print("Average RAM Requested: ", round(avg_ram / max_slots, 1))
-    # print("Average Storage Requested: ", round(avg_sto / max_slots, 1))
-
-    # acc = set(accepted).difference(expired_slices)
-    # acc_l = list(acc)
-
-    #############################################################################################################
-    #############################################################################################################
-    # a_ = np.genfromtxt("linrp_cpu.txt", delimiter=",", dtype=np.float64)
-    # print("###################")
-    # print("CPU")
-    # c_ = loadtxt("exprp_cpu.txt", comments="#", delimiter=",", unpack=False, dtype=np.float64)
-    # c = c_[:, 0]
-    # cpu_mean = np.mean(c)
-    # cpu_std = np.std(c)
-    # cpu_upper = cpu_mean + cpu_std
-    # cpu_lower = cpu_mean - cpu_std
-    # print(cpu_upper)
-    # print(round(cpu_mean, 3))
-    # print(cpu_lower)
-    # print("###################")
-    #############################################################################################################
-    #############################################################################################################
-    # a_ = np.genfromtxt("linrp_cpu.txt", delimiter=",", dtype=np.float64)
-    # print("RAM")
-    # r_ = loadtxt("exprp_ram.txt", comments="#", delimiter=",", unpack=False, dtype=np.float64)
-    # r = r_[:, 0]
-    # ram_mean = np.mean(r)
-    # ram_std = np.std(r)
-    # ram_upper = ram_mean + ram_std
-    # ram_lower = ram_mean - ram_std
-    # print(ram_upper)
-    # print(round(ram_mean, 3))
-    # print(ram_lower)
-    #############################################################################################################
-    #############################################################################################################
-    # a_ = np.genfromtxt("linrp_cpu.txt", delimiter=",", dtype=np.float64)
-    # print("###################")
-    # s_ = loadtxt("exprp_storage.txt", comments="#", delimiter=",", unpack=False, dtype=np.float64)
-    # print("Storage")
-    # s = s_[:, 0]
-    # sto_mean = np.mean(s)
-    # sto_std = np.std(s)
-    # sto_upper = sto_mean + sto_std
-    # sto_lower = sto_mean - sto_std
-    # print(sto_upper)
-    # print(round(sto_mean, 3))
-    # print(sto_lower)
-    # print("###################")
-
     return float(accumulated_value), float(no_accepted), float(total_util), float(accumulated_squares)
 
 #############################################################################################################
@@ -292,10 +140,4 @@ def ExpRP(NSRs, max_slots, sample_pool, total_requests, p_min, p_max):
 def main(max_slots, fixed_NSRs, sample_pool, total_requests, pmin, pmax):
 
     return ExpRP(fixed_NSRs, max_slots, sample_pool, total_requests, pmin, pmax)
-    # Average Acceptance Ratio
-    # exprp_aar()
-    # # # Utilization over time times
-    # exprp_cpu()
-    # exprp_ram()
-    # exprp_storage()
-    # exprp_as()
+    
