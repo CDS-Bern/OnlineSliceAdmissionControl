@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from numpy import sqrt
 
-results_file_path = "/home/cds-tofunmi/PycharmProjects/SliceAdmissionControl/total1.csv"
+results_file_path = "/home/user/PycharmProjects/SliceAdmissionControl/total1.csv"
 
 legend = {"iteration",
           "duration_upper_bound",
