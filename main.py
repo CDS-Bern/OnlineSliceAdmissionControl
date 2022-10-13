@@ -19,15 +19,6 @@ np.random.seed(init_random_seed)
 performances = []
 all_revenues = list()
 
-# assessed_parameters = {"duration_upper_bound": [1, 50],  # e.g. 15
-#                        "unit_value_upper_bound": [1, 10],  # e.g. 1000 lower bound must be greater than 0
-#                        "cpu_beta_a": [0, 5],  # e.g. 1
-#                        "cpu_beta_b": [0, 5],  # e.g. 0.5
-#                        "ram_beta_a": [0, 5],  # e.g. 0.5
-#                        "ram_beta_b": [0, 5],  # e.g. 1
-#                        "sto_beta_a": [0, 5],  # e.g. 0.2
-#                        "sto_beta_b": [0, 5]}  # e.g. 0.8
-
 assessed_parameters = {"duration_upper_bound": [5, 50],  # e.g. 15
                        "unit_value_beta_a": [0.1, 0.1],  # e.g. 1000 lower bound must be greater than 0
                        "unit_value_beta_b": [0.1, 0.1],
@@ -348,6 +339,3 @@ with open(str(unit_value_scaler) + ".csv", "w") as stored_file:
             max_dur_counter += 2
 
         # break
-
-
-
