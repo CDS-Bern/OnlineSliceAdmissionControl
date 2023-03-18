@@ -424,19 +424,11 @@ for i in enumerate(plots):
                          )
 
 
-    #plt.legend(loc="lower right", prop={'size': 10})
     plt.legend(loc=str(i[1][15]), prop={'size': 10})
     plt.rcParams.update({'font.size': 10}) # 20
-    # plt.title(y_dimension + " per " + x_dimension + ". (Group: " + show_only_cases_where[0] + "=" + str(
-    #     show_only_cases_where[1]) + ")", fontsize=10)
-    # plt.xlabel(r'$\omega$')
     plt.xlabel(r'$\omega$', fontsize=14)
-    # plt.ylabel(r'$\frac{\mu-\mu_F}{\mu_F}$', fontsize=14)
-    # plt.ylabel(r'$\frac{\eta-\eta_F}{\eta_F}$', fontsize=14)
     plt.ylabel((str(i[1][16])), fontsize=14)
     plt.tight_layout()
     plt.grid(True)
-    # plt.savefig("acc_ratio_gain_.pdf", format="pdf", bbox_inches="tight")
-    # plt.savefig("rev_gain_all_.pdf", format="pdf", bbox_inches="tight")
     plt.savefig("res_util_all_.pdf", format="pdf", bbox_inches="tight")
     plt.show()
