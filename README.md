@@ -2,7 +2,7 @@
 
 A Online Approach for Slice Admission Control in Virtualized Mobile Networks with Multi-dimensional Resources.
 
-Referenced policies/algorithms are implemented (modified) and sourced from: https://groups.cs.umass.edu/hajiesmaili/wp-content/uploads/sites/24/2021/11/Sigmetrics_2022_OnlineKnapsack.pdf
+Online reservation policies are implemented (modified) and sourced from: https://groups.cs.umass.edu/hajiesmaili/wp-content/uploads/sites/24/2021/11/Sigmetrics_2022_OnlineKnapsack.pdf
 
 ## Getting Started
 
