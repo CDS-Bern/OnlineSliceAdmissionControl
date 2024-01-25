@@ -1,6 +1,6 @@
 # Online Slice Admission Control
 
-This is the official repository for our Online Slice Admission Control paper at CCNC 2023. You can find the paper [here](https://www.genome.gov/).
+This is the official repository for our Online Slice Admission Control paper at CCNC 2023. You can find the paper [here](https://ieeexplore.ieee.org/document/10060460).
 
 If you use part of the data or code in this repository, please cite our work:
 ```
